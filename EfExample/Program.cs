@@ -12,6 +12,9 @@ namespace EfExample
             {
                 foreach (var product in db.Products.Include(x => x.Category))
                 {
+                    // Different ways to do the same - syntatic sugar
+                    //Console.WriteLine(product.Name + " " + product.Category.Name);
+                    //Console.WriteLine("{0} {1}", product.Name, product.Category.Name);
                     Console.WriteLine($"{product.Name} {product.Category.Name}");
                 }
             }
