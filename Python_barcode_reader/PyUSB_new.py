@@ -1,3 +1,4 @@
+#TEST
 import usb.core
 import usb.util
 import sys
