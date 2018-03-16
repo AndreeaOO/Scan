@@ -1,4 +1,3 @@
-#TEST
 import usb.core
 import usb.util
 import sys
@@ -37,7 +36,7 @@ if dev.is_kernel_driver_active(1):
 
 #--Set Configuration
 cfg = usb.util.find_descriptor(dev, bConfigurationValue=1)
-print(cfg)
+#print(cfg)
 dev.set_configuration(cfg)
 
 state = 0
