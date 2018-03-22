@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExample", "AdoExample\AdoExample.csproj", "{9A830442-0C4C-42A5-8DDE-954EBCD9F490}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoExample", "AdoExample\AdoExample.csproj", "{9A830442-0C4C-42A5-8DDE-954EBCD9F490}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfExample", "EfExample\EfExample.csproj", "{F2C3BE6E-277A-4984-B5A9-144BCDB65E7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfExample", "EfExample\EfExample.csproj", "{F2C3BE6E-277A-4984-B5A9-144BCDB65E7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{F41C35BC-2EC2-4BDF-83A1-110E8A632C3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F2C3BE6E-277A-4984-B5A9-144BCDB65E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2C3BE6E-277A-4984-B5A9-144BCDB65E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2C3BE6E-277A-4984-B5A9-144BCDB65E7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F41C35BC-2EC2-4BDF-83A1-110E8A632C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F41C35BC-2EC2-4BDF-83A1-110E8A632C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F41C35BC-2EC2-4BDF-83A1-110E8A632C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F41C35BC-2EC2-4BDF-83A1-110E8A632C3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

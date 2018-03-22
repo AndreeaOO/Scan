@@ -6,13 +6,10 @@ using System.Text;
 
 namespace EfExample
 {
-    public class Category
+    public class List
     {
-        //[Column("categoryid")]
-        public int Id { get; set; }
-        [StringLength(15)]
+        [Key]
+        [Column("product_name")]
         public string Name { get; set; }
-
-        public string Description { get; set; }
     }
 }

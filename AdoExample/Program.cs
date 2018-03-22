@@ -8,16 +8,15 @@ namespace AdoExample
         static void Main(string[] args)
         {
             var connStr = 
-                "server=localhost;database=northwind;uid=bulskov;pwd=henrik;SslMode=none";
+                "server=localhost;database=scan;uid=andreea;pwd=password;SslMode=none";
 
             using (var conn = new MySqlConnection(connStr))
             {
                 conn.Open();
 
-                using (var cmd = new MySqlCommand("select * from categories", conn))
+                using (var cmd = new MySqlCommand("select * from products", conn))
                 {
-                    // cmd.Connection = conn;
-                    // cmd.CommandText = "select * from categories";
+                   
 
                     var reader = cmd.ExecuteReader();
 
