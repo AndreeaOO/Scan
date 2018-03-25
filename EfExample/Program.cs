@@ -17,16 +17,27 @@ namespace Scan
                 }
             }*/
 
-
-            var input = Console.ReadLine();
-            var service = new DataService();
-            var product = service.GetProduct(double.Parse(input));
-            if (product == null)
+            using (var db = new ScanContext())
             {
-                Console.WriteLine("The product does not exist");
+                var input = Console.ReadLine();
+                var service = new DataService();
+                var product = service.GetProduct(double.Parse(input));
+                if (product == null)
+                {
+                    Console.WriteLine("The product does not exist");
+                }
+                else Console.WriteLine(product.Name);
+
+                var product_list = service.GetProductList(product.Name);
+                if (product_list == null)
+                {
+                    var list = service.CreateProduct_List(product.Name);
+                }
+                else db.List.Remove(product_list);
+                Console.WriteLine("Product removed");
+                db.SaveChanges();
             }
-            else Console.WriteLine(product.Name);
-            var list = service.CreateProduct_List(product.Name);
+
             //var delete = service.DeleteProduct_List("option4");
             //var update = service.UpdateProduct(12345, "test4");
 
@@ -50,6 +61,16 @@ namespace Scan
             using (var db = new ScanContext())
             {
                 var product = db.Products.Find(code);
+                if (product == null) return null;
+                return product;
+            }
+        }
+
+        public List GetProductList(string name)
+        {
+            using (var db = new ScanContext())
+            {
+                var product = db.List.Find(name);
                 if (product == null) return null;
                 return product;
             }
