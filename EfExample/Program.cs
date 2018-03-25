@@ -9,13 +9,22 @@ namespace EfExample
     {
         static void Main(string[] args)
         {
-            using (var db = new ScanContext())
+            /*using (var db = new ScanContext())
             {
                 foreach (var product in db.Products)
                 {
                     Console.WriteLine($"{product.Name} {product.Code}");
-                } 
-            }
+                }
+            }*/
+
+
+            var input = Console.ReadLine();
+            var service = new DataService();
+            var product = service.GetProduct(double.Parse(input));
+            Console.WriteLine(product.Name);
+            var list = service.CreateProduct_List(product.Name);
+            
+
         }
 
         public List<Products> GetProducts()
@@ -106,5 +115,11 @@ namespace EfExample
                 }
             }
         }
+
+
+
+
+        //if inputcode == product_code add product_name to list
+        
     }
 }
