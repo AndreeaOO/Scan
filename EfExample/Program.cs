@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace EfExample
+namespace Scan
 {
     public class DataService
     {

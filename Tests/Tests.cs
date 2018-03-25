@@ -1,4 +1,4 @@
-using EfExample;
+using Scan;
 using System;
 using Xunit;
 using System.Linq;

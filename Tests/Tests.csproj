@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EfExample\EfExample.csproj" />
+    <ProjectReference Include="..\EfExample\Scan.csproj" />
   </ItemGroup>
 
 </Project>

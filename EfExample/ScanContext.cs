@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EfExample
+namespace Scan
 {
     public class ScanContext : DbContext
     {
