@@ -11,9 +11,9 @@ namespace EfExample
         {
             /*using (var db = new ScanContext())
             {
-                foreach (var product in db.Products)
+                foreach (var p in db.Products)
                 {
-                    Console.WriteLine($"{product.Name} {product.Code}");
+                    Console.WriteLine($"{p.Name} {p.Code}");
                 }
             }*/
 
@@ -21,9 +21,15 @@ namespace EfExample
             var input = Console.ReadLine();
             var service = new DataService();
             var product = service.GetProduct(double.Parse(input));
-            Console.WriteLine(product.Name);
+            if (product == null)
+            {
+                Console.WriteLine("The product does not exist");
+            }
+            else Console.WriteLine(product.Name);
             var list = service.CreateProduct_List(product.Name);
-            
+            //var delete = service.DeleteProduct_List("option4");
+            //var update = service.UpdateProduct(12345, "test4");
+
 
         }
 
