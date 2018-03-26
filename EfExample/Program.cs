@@ -19,9 +19,8 @@ namespace Scan
                 }
             }*/
 
-            string line;
-            line = Console.ReadLine();
-            while ((line = Console.ReadLine()) != null || line.ToLower() != "q")
+            string line = Console.ReadLine();
+            while ((line = Console.ReadLine()) != null || line.ToLower() != "done")
             {
                using (var db = new ScanContext())
                {
@@ -59,9 +58,9 @@ namespace Scan
                }
             }
 
-            /*var service = new DataService();
-            var delete = service.DeleteProduct_List("test1");*/
-
+            //var service = new DataService();
+            //var delete = service.DeleteProduct_Buy("test1");
+            //var create = service.CreateProduct(1, "test5");
             //var update = service.UpdateProduct(12345, "test4");
 
         }
@@ -213,21 +212,14 @@ namespace Scan
         {
             using (var writer = new StreamWriter(File.OpenWrite(outputFile)))
             {
-               
-                writer.WriteLine($"{words}");      
+                
+                    writer.WriteLine($"{words}");
                 
             }
         }
 
         public static void RemoveFromFile(string outputFile, string words)
         {
-           /* using (var writer = new StreamWriter(File.OpenWrite(outputFile)))
-            {
-
-                writer.RemoveLine(words);
-
-            }*/
-
             string search_text = words;
             string old;
             string n = "";
@@ -241,8 +233,6 @@ namespace Scan
             }
             sr.Close();
             File.WriteAllText("in_the_fridge.txt", n);
-
         }
-
     }
 }

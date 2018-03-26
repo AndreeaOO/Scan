@@ -8,7 +8,7 @@ namespace Scan
 {
     public class Products
     {
-        [Key]
+        [Key] 
         [Column("product_code")]
         public double Code { get; set; }
         [Column("product_name")]

@@ -8,7 +8,7 @@ namespace Scan
 {
     public class To_Buy
     {
-        [Key]
+        [Key] 
         [Column("product_name")]
         public string Name { get; set; }
     }

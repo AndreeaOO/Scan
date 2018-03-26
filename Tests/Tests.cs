@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Tests
 {
-    public class Tests
+    public class Tests // testing that the function work - create, update, delete
     {
         
         [Fact]
