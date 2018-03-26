@@ -66,6 +66,8 @@ namespace Scan
             //var create = service.CreateProduct(1, "test5");
             //var update = service.UpdateProduct(12345, "test4");
 
+
+
         }
 
         public List<Products> GetProducts()
