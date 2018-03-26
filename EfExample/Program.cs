@@ -20,14 +20,14 @@ namespace Scan
             }*/
 
             string line;
+            line = Console.ReadLine();
             while ((line = Console.ReadLine()) != null || line.ToLower() != "q")
             {
                using (var db = new ScanContext())
                {
                 
-                    var input = Console.ReadLine();
                     var service = new DataService();
-                    var product = service.GetProduct(double.Parse(input));
+                    var product = service.GetProduct(double.Parse(line));
                     if (product == null)
                     {
                         Console.WriteLine("The product does not exist");
@@ -60,8 +60,7 @@ namespace Scan
             }
 
             /*var service = new DataService();
-            var delete = service.DeleteProduct_Buy("test1");*/
-
+            var delete = service.DeleteProduct_List("test1");*/
 
             //var update = service.UpdateProduct(12345, "test4");
 
