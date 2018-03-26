@@ -54,7 +54,14 @@ namespace Scan
                         }
                         else
                         {
-                            Console.WriteLine("Product in the to buy list");
+                            Console.WriteLine("Product removed from the to buy list and added to the fridge list");
+                            var list = service.CreateProduct_List(product.Name);
+                            db.To_Buy.Remove(product_buy);
+                            db.SaveChanges();
+                            var outputFile1 = "to_buy.txt";
+                            RemoveFromFile(outputFile1, product.Name);
+                            var outputFile = "in_the_fridge.txt";
+                            AppendText(outputFile, product.Name);
                         }
                     }
                     else
