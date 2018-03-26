@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Scan
 {
@@ -18,40 +19,44 @@ namespace Scan
                 }
             }*/
 
-            using (var db = new ScanContext())
+            string line;
+            while ((line = Console.ReadLine()) != null || line.ToLower() != "q")
             {
-                var input = Console.ReadLine();
-                var service = new DataService();
-                var product = service.GetProduct(double.Parse(input));
-                if (product == null)
-                {
-                    Console.WriteLine("The product does not exist");
-                }
-                else Console.WriteLine(product.Name);
+               using (var db = new ScanContext())
+               {
+                
+                    var input = Console.ReadLine();
+                    var service = new DataService();
+                    var product = service.GetProduct(double.Parse(input));
+                    if (product == null)
+                    {
+                        Console.WriteLine("The product does not exist");
+                    }
+                    else Console.WriteLine(product.Name);
 
-                var product_list = service.GetProductList(product.Name);
-                if (product_list == null)
-                {
-                    var list = service.CreateProduct_List(product.Name);
-                    Console.WriteLine("Product in the fridge");
-                    db.SaveChanges();
-                    var outputFile = "in_the_fridge.txt";
-                    WriteWordsToFile(outputFile, product.Name);
-                }
-                else
-                {
-                    db.List.Remove(product_list);
-                    Console.WriteLine("Product removed");
-                    var buy = service.CreateProduct_Buy(product.Name);
-                    Console.WriteLine("To buy");
-                    db.SaveChanges();
-                    var outputFile = "to_buy.txt";
-                    WriteWordsToFile(outputFile, product.Name);
-                    var outputFile1 = "in_the_fridge.txt";
-                    RemoveFromFile (outputFile1, product.Name);
+                    var product_list = service.GetProductList(product.Name);
+                    if (product_list == null)
+                    {
+                        var list = service.CreateProduct_List(product.Name);
+                        Console.WriteLine("Product in the fridge");
+                        db.SaveChanges();
+                        var outputFile = "in_the_fridge.txt";
+                        WriteWordsToFile(outputFile, product.Name);
+                    }
+                    else
+                    {
+                        db.List.Remove(product_list);
+                        Console.WriteLine("Product removed");
+                        var buy = service.CreateProduct_Buy(product.Name);
+                        Console.WriteLine("To buy");
+                        db.SaveChanges();
+                        var outputFile = "to_buy.txt";
+                        WriteWordsToFile(outputFile, product.Name);
+                        var outputFile1 = "in_the_fridge.txt";
+                        RemoveFromFile(outputFile1, product.Name);
 
-                }
-
+                    }
+               }
             }
 
             /*var service = new DataService();
@@ -59,7 +64,6 @@ namespace Scan
 
 
             //var update = service.UpdateProduct(12345, "test4");
-
 
         }
 
@@ -240,7 +244,6 @@ namespace Scan
             File.WriteAllText("in_the_fridge.txt", n);
 
         }
-
 
     }
 }
