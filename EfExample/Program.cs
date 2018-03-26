@@ -30,25 +30,40 @@ namespace Scan
                     var product = service.GetProduct(double.Parse(line));
                     if (product == null)
                     {
-                        Console.WriteLine("The product does not exist");
-                    }
-                    else Console.WriteLine(product.Name);
-
-                    var product_list = service.GetProductList(product.Name);
-                    if (product_list == null)
-                    {
-                        var list = service.CreateProduct_List(product.Name);
-                        Console.WriteLine("Product in the fridge");
-                        db.SaveChanges();
+                        Console.WriteLine("The product does not exist in the database, please insert product name");
+                        string name = Console.ReadLine();
+                        var new_product = service.CreateProduct(double.Parse(line), name);
+                        var new_product_list = service.CreateProduct_List(product.Name);
                         var outputFile = "in_the_fridge.txt";
                         AppendText(outputFile, product.Name);
                     }
+                    else Console.WriteLine(product.Name);
+
+
+                    var product_list = service.GetProductList(product.Name);
+                    var product_buy = service.GetProductBuy(product.Name);
+                    if (product_list == null)
+                    {
+                        if (product_buy == null)
+                        {
+                            var list = service.CreateProduct_List(product.Name);
+                            Console.WriteLine("Product in the fridge");
+                            db.SaveChanges();
+                            var outputFile = "in_the_fridge.txt";
+                            AppendText(outputFile, product.Name);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Product in the to buy list");
+                        }
+                    }
                     else
                     {
+
                         db.List.Remove(product_list);
-                        Console.WriteLine("Product removed");
+                        Console.WriteLine("Product removed from fridge list");
                         var buy = service.CreateProduct_Buy(product.Name);
-                        Console.WriteLine("To buy");
+                        Console.WriteLine("Product added to the to buy list");
                         db.SaveChanges();
                         var outputFile = "to_buy.txt";
                         AppendText(outputFile, product.Name);
@@ -61,7 +76,9 @@ namespace Scan
             
 
             //var service = new DataService();
-            //var delete = service.DeleteProduct_Buy("test4");
+            //var delete = service.DeleteProduct_Buy("test1");
+
+
 
             //var create = service.CreateProduct(1, "test5");
             //var update = service.UpdateProduct(12345, "test4");
@@ -217,9 +234,9 @@ namespace Scan
         {
             using (var writer = new StreamWriter(File.OpenWrite(outputFile)))
             {
-                
-                    writer.WriteLine($"{words}");
-                
+
+                writer.WriteLine($"{words}");
+
             }
         }
 
@@ -228,8 +245,8 @@ namespace Scan
         {
 
             using (var writer = new StreamWriter(outputFile, true))
-            { 
-            writer.WriteLine($"{words}");
+            {
+                writer.WriteLine($"{words}");
             }
 
         }
