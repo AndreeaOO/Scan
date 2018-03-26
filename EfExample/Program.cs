@@ -33,9 +33,10 @@ namespace Scan
                         Console.WriteLine("The product does not exist in the database, please insert product name");
                         string name = Console.ReadLine();
                         var new_product = service.CreateProduct(double.Parse(line), name);
-                        var new_product_list = service.CreateProduct_List(product.Name);
+                        Console.WriteLine("product "+name+" created");
+                        var new_product_list = service.CreateProduct_List(name);
                         var outputFile = "in_the_fridge.txt";
-                        AppendText(outputFile, product.Name);
+                        AppendText(outputFile, name);
                     }
                     else Console.WriteLine(product.Name);
 
