@@ -19,12 +19,13 @@ namespace Scan
                 }
             }*/
 
+            Console.WriteLine("Start scanning");
             string line = Console.ReadLine();
-            while ((line = Console.ReadLine()) != null || line.ToLower() != "done")
+            do
             {
-               using (var db = new ScanContext())
-               {
-                
+                using (var db = new ScanContext())
+                {
+
                     var service = new DataService();
                     var product = service.GetProduct(double.Parse(line));
                     if (product == null)
@@ -40,7 +41,7 @@ namespace Scan
                         Console.WriteLine("Product in the fridge");
                         db.SaveChanges();
                         var outputFile = "in_the_fridge.txt";
-                        WriteWordsToFile(outputFile, product.Name);
+                        AppendText(outputFile, product.Name);
                     }
                     else
                     {
@@ -50,16 +51,18 @@ namespace Scan
                         Console.WriteLine("To buy");
                         db.SaveChanges();
                         var outputFile = "to_buy.txt";
-                        WriteWordsToFile(outputFile, product.Name);
+                        AppendText(outputFile, product.Name);
                         var outputFile1 = "in_the_fridge.txt";
                         RemoveFromFile(outputFile1, product.Name);
 
                     }
-               }
-            }
+                }
+            } while ((line = Console.ReadLine()) != null || line.ToLower() != "done");
+            
 
             //var service = new DataService();
-            //var delete = service.DeleteProduct_Buy("test1");
+            //var delete = service.DeleteProduct_Buy("test4");
+
             //var create = service.CreateProduct(1, "test5");
             //var update = service.UpdateProduct(12345, "test4");
 
@@ -218,12 +221,24 @@ namespace Scan
             }
         }
 
+
+        public static void AppendText(string outputFile, string words)
+        {
+
+            using (var writer = new StreamWriter(outputFile, true))
+            { 
+            writer.WriteLine($"{words}");
+            }
+
+        }
+
+
         public static void RemoveFromFile(string outputFile, string words)
         {
             string search_text = words;
             string old;
             string n = "";
-            StreamReader sr = File.OpenText("in_the_fridge.txt");
+            StreamReader sr = File.OpenText(outputFile);
             while ((old = sr.ReadLine()) != null)
             {
                 if (!old.Contains(search_text))
@@ -232,7 +247,7 @@ namespace Scan
                 }
             }
             sr.Close();
-            File.WriteAllText("in_the_fridge.txt", n);
+            File.WriteAllText(outputFile, n);
         }
     }
 }
