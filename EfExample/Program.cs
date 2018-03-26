@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Scan
 {
@@ -32,13 +33,31 @@ namespace Scan
                 if (product_list == null)
                 {
                     var list = service.CreateProduct_List(product.Name);
+                    Console.WriteLine("Product in the fridge");
+                    db.SaveChanges();
+                    var outputFile = "in_the_fridge.txt";
+                    WriteWordsToFile(outputFile, product.Name);
                 }
-                else db.List.Remove(product_list);
-                Console.WriteLine("Product removed");
-                db.SaveChanges();
+                else
+                {
+                    db.List.Remove(product_list);
+                    Console.WriteLine("Product removed");
+                    var buy = service.CreateProduct_Buy(product.Name);
+                    Console.WriteLine("To buy");
+                    db.SaveChanges();
+                    var outputFile = "to_buy.txt";
+                    WriteWordsToFile(outputFile, product.Name);
+                    var outputFile1 = "in_the_fridge.txt";
+                    RemoveFromFile (outputFile1, product.Name);
+
+                }
+
             }
 
-            //var delete = service.DeleteProduct_List("option4");
+            /*var service = new DataService();
+            var delete = service.DeleteProduct_Buy("test1");*/
+
+
             //var update = service.UpdateProduct(12345, "test4");
 
 
@@ -56,6 +75,12 @@ namespace Scan
             return db.List.ToList<List>();
         }
 
+        public List<To_Buy> GetBuy()
+        {
+            var db = new ScanContext();
+            return db.To_Buy.ToList<To_Buy>();
+        }
+
         public Products GetProduct(double code)
         {
             using (var db = new ScanContext())
@@ -71,6 +96,17 @@ namespace Scan
             using (var db = new ScanContext())
             {
                 var product = db.List.Find(name);
+                if (product == null) return null;
+                return product;
+            }
+        }
+
+
+        public To_Buy GetProductBuy(string name)
+        {
+            using (var db = new ScanContext())
+            {
+                var product = db.To_Buy.Find(name);
                 if (product == null) return null;
                 return product;
             }
@@ -97,6 +133,18 @@ namespace Scan
                 return list;
             }
         }
+
+        public To_Buy CreateProduct_Buy(string name)
+        {
+            using (var db = new ScanContext())
+            {
+                var buy = new To_Buy { Name = name };
+                db.To_Buy.Add(buy);
+                db.SaveChanges();
+                return buy;
+            }
+        }
+
 
         public bool UpdateProduct(double code, string Name)
         {
@@ -143,10 +191,56 @@ namespace Scan
             }
         }
 
+        public bool DeleteProduct_Buy(string name)
+        {
+            using (var db = new ScanContext())
+            {
+                var buy = db.To_Buy.Find(name);
+                if (buy == null) return false;
+                else
+                {
+                    db.To_Buy.Remove(buy);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+        }
+
+        public static void WriteWordsToFile(string outputFile, string words)
+        {
+            using (var writer = new StreamWriter(File.OpenWrite(outputFile)))
+            {
+               
+                writer.WriteLine($"{words}");      
+                
+            }
+        }
+
+        public static void RemoveFromFile(string outputFile, string words)
+        {
+           /* using (var writer = new StreamWriter(File.OpenWrite(outputFile)))
+            {
+
+                writer.RemoveLine(words);
+
+            }*/
+
+            string search_text = words;
+            string old;
+            string n = "";
+            StreamReader sr = File.OpenText("in_the_fridge.txt");
+            while ((old = sr.ReadLine()) != null)
+            {
+                if (!old.Contains(search_text))
+                {
+                    n += old + Environment.NewLine;
+                }
+            }
+            sr.Close();
+            File.WriteAllText("in_the_fridge.txt", n);
+
+        }
 
 
-
-        //if inputcode == product_code add product_name to list
-        
     }
 }

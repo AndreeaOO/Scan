@@ -9,6 +9,7 @@ namespace Scan
     {
         public DbSet<List> List { get; set; }
         public DbSet<Products> Products { get; set; }
+        public DbSet<To_Buy> To_Buy { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -23,7 +24,9 @@ namespace Scan
             base.OnModelCreating(modelBuilder);
 
             //modelBuilder.Entity<Category>().ToTable("categories");
-            
+
+            modelBuilder.Entity<To_Buy>().Property(x => x.Name).HasColumnName("product_name");
+
             modelBuilder.Entity<List>().Property(x => x.Name).HasColumnName("product_name");
 
             modelBuilder.Entity<Products>().Property(x => x.Code).HasColumnName("product_code");
