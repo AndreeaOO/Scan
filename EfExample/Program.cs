@@ -76,9 +76,7 @@ namespace Scan
             
 
             //var service = new DataService();
-            //var delete = service.DeleteProduct_Buy("test1");
-
-
+            //var delete = service.DeleteProduct_List("test2");
 
             //var create = service.CreateProduct(1, "test5");
             //var update = service.UpdateProduct(12345, "test4");
