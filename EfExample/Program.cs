@@ -36,7 +36,10 @@ namespace Scan
                         Console.WriteLine("product "+name+" created");
                         var new_product_list = service.CreateProduct_List(name);
                         var outputFile = "in_the_fridge.txt";
+
+                        //File.OpenText(outputFile);
                         AppendText(outputFile, name);
+                        
                     }
                     else Console.WriteLine(product.Name);
 
@@ -51,6 +54,8 @@ namespace Scan
                             Console.WriteLine("Product in the fridge");
                             db.SaveChanges();
                             var outputFile = "in_the_fridge.txt";
+
+                            //File.OpenText(outputFile);
                             AppendText(outputFile, product.Name);
                         }
                         else
@@ -60,8 +65,13 @@ namespace Scan
                             db.To_Buy.Remove(product_buy);
                             db.SaveChanges();
                             var outputFile1 = "to_buy.txt";
+
+                            //File.OpenText(outputFile1);
                             RemoveFromFile(outputFile1, product.Name);
+
                             var outputFile = "in_the_fridge.txt";
+
+                            //File.OpenText(outputFile);
                             AppendText(outputFile, product.Name);
                         }
                     }
@@ -74,13 +84,25 @@ namespace Scan
                         Console.WriteLine("Product added to the to buy list");
                         db.SaveChanges();
                         var outputFile = "to_buy.txt";
+
+                        //File.OpenText(outputFile);
                         AppendText(outputFile, product.Name);
+                        
                         var outputFile1 = "in_the_fridge.txt";
+
+                        //File.OpenText(outputFile1);
                         RemoveFromFile(outputFile1, product.Name);
 
                     }
                 }
             } while ((line = Console.ReadLine()) != null || line.ToLower() != "done");
+
+
+            var input = line.ToString();
+            if (input.ToLower() == "done")
+            {
+                
+            }
             
 
             //var service = new DataService();
@@ -252,7 +274,10 @@ namespace Scan
 
             using (var writer = new StreamWriter(outputFile, true))
             {
+                
                 writer.WriteLine($"{words}");
+                writer.Close();
+
             }
 
         }
