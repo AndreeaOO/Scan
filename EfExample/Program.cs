@@ -37,8 +37,7 @@ namespace Scan
                         var new_product_list = service.CreateProduct_List(name);
                         var outputFile = "in_the_fridge.txt";
 
-                        //File.OpenText(outputFile);
-                        AppendText(outputFile, name);
+                        AppendTextList(outputFile, name);
                         
                     }
                     else Console.WriteLine(product.Name);
@@ -55,8 +54,7 @@ namespace Scan
                             db.SaveChanges();
                             var outputFile = "in_the_fridge.txt";
 
-                            //File.OpenText(outputFile);
-                            AppendText(outputFile, product.Name);
+                            AppendTextList(outputFile, product.Name);
                         }
                         else
                         {
@@ -66,13 +64,11 @@ namespace Scan
                             db.SaveChanges();
                             var outputFile1 = "to_buy.txt";
 
-                            //File.OpenText(outputFile1);
-                            RemoveFromFile(outputFile1, product.Name);
+                            RemoveFromFileBuy(outputFile1, product.Name);
 
                             var outputFile = "in_the_fridge.txt";
 
-                            //File.OpenText(outputFile);
-                            AppendText(outputFile, product.Name);
+                            AppendTextList(outputFile, product.Name);
                         }
                     }
                     else
@@ -85,13 +81,11 @@ namespace Scan
                         db.SaveChanges();
                         var outputFile = "to_buy.txt";
 
-                        //File.OpenText(outputFile);
-                        AppendText(outputFile, product.Name);
+                        AppendTextBuy(outputFile, product.Name);
                         
                         var outputFile1 = "in_the_fridge.txt";
 
-                        //File.OpenText(outputFile1);
-                        RemoveFromFile(outputFile1, product.Name);
+                        RemoveFromFileList(outputFile1, product.Name);
 
                     }
                 }
@@ -269,7 +263,8 @@ namespace Scan
         }
 
 
-        public static void AppendText(string outputFile, string words)
+
+        public static void AppendTextList(string outputFile, string words)
         {
 
             using (var writer = new StreamWriter(outputFile, true))
@@ -282,8 +277,38 @@ namespace Scan
 
         }
 
+        public static void AppendTextBuy(string outputFile, string words)
+        {
+            //var filePath = "C:\Users\Andreea\Dropbox\in_the_fridge.txt";
+            using (var writer = new StreamWriter(outputFile, true))
+            {
 
-        public static void RemoveFromFile(string outputFile, string words)
+                writer.WriteLine($"{words}");
+                writer.Close();
+
+            }
+
+        }
+
+
+        public static void RemoveFromFileList(string outputFile, string words)
+        {
+            string search_text = words;
+            string old;
+            string n = "";
+            StreamReader sr = File.OpenText(outputFile);
+            while ((old = sr.ReadLine()) != null)
+            {
+                if (!old.Contains(search_text))
+                {
+                    n += old + Environment.NewLine;
+                }
+            }
+            sr.Close();
+            File.WriteAllText(outputFile, n);
+        }
+
+        public static void RemoveFromFileBuy(string outputFile, string words)
         {
             string search_text = words;
             string old;
