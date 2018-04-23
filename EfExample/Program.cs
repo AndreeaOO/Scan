@@ -4,13 +4,23 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Dropbox.Api;
+using Dropbox.Api.Files;
+using System.Text;
 
 namespace Scan
 {
     public class DataService
     {
+       //static Task mainTask = new Task(new Action(Main));
+ 
         static void Main(string[] args)
         {
+
+            Task.Run(async () => await StartDbxClient());
+          //Task Startdbx = new Task(() => await StartDbxClient());
+            
+            //mainTask.Start();
             /*using (var db = new ScanContext())
             {
                 foreach (var p in db.Products)
@@ -18,7 +28,7 @@ namespace Scan
                     Console.WriteLine($"{p.Name} {p.Code}");
                 }
             }*/
-
+            
             Console.WriteLine("Start scanning");
             string line = Console.ReadLine();
             do
@@ -252,6 +262,14 @@ namespace Scan
             }
         }
 
+
+        static async Task StartDbxClient() {
+            using (var dbx = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE")) {
+                var full = await dbx.Users.GetCurrentAccountAsync();
+                Console.WriteLine("{0} - {1}", full.Name.DisplayName, full.Email);
+            }
+        }
+
         public static void WriteWordsToFile(string outputFile, string words)
         {
             using (var writer = new StreamWriter(File.OpenWrite(outputFile)))
@@ -261,8 +279,6 @@ namespace Scan
 
             }
         }
-
-
 
         public static void AppendTextList(string outputFile, string words)
         {
@@ -275,6 +291,15 @@ namespace Scan
 
             }
 
+        }
+        async Task UploadToDB(DropboxClient dbx, string folder, string file, string content) {
+            using (var mem = new MemoryStream(Encoding.UTF8.GetBytes(content))) {
+                var updated = await dbx.Files.UploadAsync(
+                    folder + "/" + file,
+                    WriteMode.Overwrite.Instance,
+                    body: mem);
+                Console.WriteLine("Saved {0}/{1} rev {2}", folder, file, updated.Rev);
+            }
         }
 
         public static void AppendTextBuy(string outputFile, string words)
