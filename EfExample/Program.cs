@@ -19,11 +19,6 @@ namespace Scan
                     Console.WriteLine($"{p.Name} {p.Code}");
                 }
             }*/
-            
-            //Dropbox bdx = new Dropbox();
-            //dbx.InitClient();
-            //dbx.task.Run(Upload())    
-            
             Console.WriteLine("Start scanning");
             string line = Console.ReadLine();
             do
