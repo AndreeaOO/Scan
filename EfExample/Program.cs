@@ -4,14 +4,22 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Threading;
 using Dropbox.Api;
+using System.IO;
+using System.Text;
 
 namespace Scan
 {
     public class DataService
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            Thread.CurrentThread.Name = "Main";
+            Task dbxtask = Task.Factory.StartNew(async () => await RunDbxClient());
+            //Task dbx_upload2 = Task.Factory.StartNew(async () => await bdx_Upload(dbxtask.));
+            
+            //LIFE SUCKS, PLEASE COMMIT THIS SHITG
             /*using (var db = new ScanContext())
             {
                 foreach (var p in db.Products)
@@ -39,6 +47,7 @@ namespace Scan
 
                         //File.OpenText(outputFile);
                         AppendText(outputFile, name);
+                        Task.Run(Upload(dbxtask.))
                         
                     }
                     else Console.WriteLine(product.Name);
@@ -280,6 +289,21 @@ namespace Scan
 
             }
 
+        }
+        static async Task RunDbxClient() {
+            using (var dbx = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE")) {
+                var full = await dbx.Users.GetCurrentAccountAsync();
+                Console.WriteLine("{0} - {1}", full.Name.DisplayName, full.Email);
+            }
+        }
+       static async Task bdx_Upload(DropboxClient dbx, string folder, string file, string content) {
+            using (var mem = new MemoryStream(Encoding.UTF8.GetBytes(content))) {
+                var updated = await dbx.Files.UploadAsync(
+                    folder + "/" + file,
+                    WriteMode.Overwrite.Instance,
+                    body: mem);
+                Console.WriteLine("Saved {0}/{1} rev {2}", folder, file, updated.Rev);
+            }
         }
 
 

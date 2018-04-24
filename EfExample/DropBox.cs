@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 class DropBox {
-    static void InitClient() {
+    public static void InitClient() {
         var task = Task.Run(Run);
         task.Wait();
     }
 
-        static async Task Run() {
+        static async Task RunDbxClient() {
             using (var dbx = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE")) {
                 var full = await dbx.Users.GetCurrentAccountAsync();
                 Console.WriteLine("{0} - {1}", full.Name.DisplayName, full.Email);
