@@ -13,13 +13,14 @@ namespace Scan
     public class DataService
     {
        //static Task mainTask = new Task(new Action(Main));
- 
+
+    //Add download of file if it does not exisit?
         static void Main(string[] args)
         {
 
             Task.Run(async () => await StartDbxClient());
-          //Task Startdbx = new Task(() => await StartDbxClient());
-            
+            DropboxClient dbxc = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE");
+
             //mainTask.Start();
             /*using (var db = new ScanContext())
             {
@@ -46,9 +47,10 @@ namespace Scan
                         Console.WriteLine("product "+name+" created");
                         var new_product_list = service.CreateProduct_List(name);
                         var outputFile = "in_the_fridge.txt";
-
                         AppendTextList(outputFile, name);
-                        
+                        using(var fileStream = File.Open("in_the_fridge.txt", FileMode.Open)){   
+                        Task.Run(async () => await UploadToDB(dbxc,"Smart_fridge", "in_the_fridge.txt", fileStream.ToString()));
+                        }
                     }
                     else Console.WriteLine(product.Name);
 
@@ -264,10 +266,9 @@ namespace Scan
 
 
         static async Task StartDbxClient() {
-            using (var dbx = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE")) {
+            var dbx = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE");
                 var full = await dbx.Users.GetCurrentAccountAsync();
                 Console.WriteLine("{0} - {1}", full.Name.DisplayName, full.Email);
-            }
         }
 
         public static void WriteWordsToFile(string outputFile, string words)
@@ -292,7 +293,7 @@ namespace Scan
             }
 
         }
-        async Task UploadToDB(DropboxClient dbx, string folder, string file, string content) {
+        static async Task UploadToDB(DropboxClient dbx, string folder, string file, string content) {
             using (var mem = new MemoryStream(Encoding.UTF8.GetBytes(content))) {
                 var updated = await dbx.Files.UploadAsync(
                     folder + "/" + file,
