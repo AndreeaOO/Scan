@@ -16,7 +16,7 @@ namespace Scan
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseMySql(
-                "server=localhost;database=scan;uid=andreea;pwd=password;SslMode=none");
+                "server=localhost;database=scan;uid=root;pwd=toor;SslMode=none");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

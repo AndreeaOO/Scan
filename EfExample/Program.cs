@@ -13,15 +13,19 @@ namespace Scan
     public class DataService
     {
        //static Task mainTask = new Task(new Action(Main));
+        
+        
+        //126.3 
 
     //Add download of file if it does not exisit?
         static void Main(string[] args)
         {
 
             Task.Run(async () => await StartDbxClient());
+            //var testfile = File.Open("test_file.txt", FileMode.Open);
             DropboxClient dbxc = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE");
-
-            //mainTask.Start();
+            /*Task.Run(async () => await UploadToDB(dbxc,"Smart_fridge", "test.txt", testfile.ToString()));
+            Console.WriteLine("FIle ", testfile, "uploloaded");*/
             /*using (var db = new ScanContext())
             {
                 foreach (var p in db.Products)
@@ -38,6 +42,7 @@ namespace Scan
                 {
 
                     var service = new DataService();
+                        
                     var product = service.GetProduct(double.Parse(line));
                     if (product == null)
                     {
@@ -48,16 +53,23 @@ namespace Scan
                         var new_product_list = service.CreateProduct_List(name);
                         var outputFile = "in_the_fridge.txt";
                         AppendTextList(outputFile, name);
-                        using(var fileStream = File.Open("in_the_fridge.txt", FileMode.Open)){   
-                        Task.Run(async () => await UploadToDB(dbxc,"Smart_fridge", "in_the_fridge.txt", fileStream.ToString()));
+                        var fileStream = File.Open("in_the_fridge.txt", FileMode.Open);
+                        try
+                        {
+                            Task.Run(async () => await UploadToDB(dbxc, "Smart_fridge", "in_the_fridge.txt", fileStream.ToString()));
+                            Console.WriteLine("FIle " + fileStream.Name + "uploaded");
+                        }
+                        catch (DropboxException e)
+                        { 
+                            Console.WriteLine("An error has occourred");
                         }
                     }
                     else Console.WriteLine(product.Name);
 
 
-                    var product_list = service.GetProductList(product.Name);
+                    var productList = service.GetProductList(product.Name);
                     var product_buy = service.GetProductBuy(product.Name);
-                    if (product_list == null)
+                    if (productList == null)
                     {
                         if (product_buy == null)
                         {
@@ -67,6 +79,9 @@ namespace Scan
                             var outputFile = "in_the_fridge.txt";
 
                             AppendTextList(outputFile, product.Name);
+                            var fileStream = File.Open("in_the_fridge.txt", FileMode.Open);   
+                            Task.Run(async () => await UploadToDB(dbxc,"Smart_fridge", "in_the_fridge.txt", fileStream.ToString()));
+                            Console.WriteLine("FIle ", outputFile, " uploaded");        
                         }
                         else
                         {
@@ -81,12 +96,13 @@ namespace Scan
                             var outputFile = "in_the_fridge.txt";
 
                             AppendTextList(outputFile, product.Name);
+                            
                         }
                     }
                     else
                     {
 
-                        db.List.Remove(product_list);
+                        db.List.Remove(productList);
                         Console.WriteLine("Product removed from fridge list");
                         var buy = service.CreateProduct_Buy(product.Name);
                         Console.WriteLine("Product added to the to buy list");
