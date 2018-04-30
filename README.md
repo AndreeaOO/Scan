@@ -10,13 +10,13 @@ DISCLAIMER: this project is still under development and does not work as intende
 
 *Please note: for various reasons, we ended up using a number of different repositories through the course of this project: Oldrer repositories, containing previous attempt at this or previous iterations of this code, have been included here as sub-trees with link provided to the original repo*.
 
-##Requirements
+## Requirements
 - A barcode scanner of sorts
 - .NET core SDK => 1.4
 - MySQL 5.7
 - a Dropbox account fro syncing, if desired
 
-##Setup
+## Setup
 
 0) We assume you have both MySQL insalled alongside the .NET SDK.
 1) Create a new sql connection or use an existing.
