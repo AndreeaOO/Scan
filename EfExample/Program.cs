@@ -42,7 +42,7 @@ namespace Scan
                 {
 
                     var service = new DataService();
-                        
+                    // If Product does not exisit in DB, create it and ad it to the list of items in the fridge.    
                     var product = service.GetProduct(double.Parse(line));
                     if (product == null)
                     {
@@ -73,6 +73,7 @@ namespace Scan
                     {
                         if (product_buy == null)
                         {
+                            // Add product to the list of items in the fridge if it exisits in DB already
                             var list = service.CreateProduct_List(product.Name);
                             Console.WriteLine("Product in the fridge");
                             db.SaveChanges();
@@ -85,6 +86,7 @@ namespace Scan
                         }
                         else
                         {
+                            //Else if it exists in the to_buy list, remove it from there and put it back in the fridge list
                             Console.WriteLine("Product removed from the to buy list and added to the fridge list");
                             var list = service.CreateProduct_List(product.Name);
                             db.To_Buy.Remove(product_buy);
@@ -101,7 +103,7 @@ namespace Scan
                     }
                     else
                     {
-
+                        //If product already exisits in the fridge list, remove it and place it in the to buy list
                         db.List.Remove(productList);
                         Console.WriteLine("Product removed from fridge list");
                         var buy = service.CreateProduct_Buy(product.Name);
@@ -125,37 +127,31 @@ namespace Scan
             {
                 
             }
-            
-
-            //var service = new DataService();
-            //var delete = service.DeleteProduct_List("test1");
-
-            //var create = service.CreateProduct(1, "test5");
-            //var update = service.UpdateProduct(12345, "test4");
 
 
+        } // End of Main()
+        
+        //Below are all the DataService methods used to communicate with the database.
 
-        }
-
-        public List<Products> GetProducts()
+        public List<Products> GetProducts() //Returns a list of products present in the DB
         {
             var db = new ScanContext();
             return db.Products.ToList<Products>();
         }
 
-        public List<List> GetList()
+        public List<List> GetList() //Returns a list of items in the fridge
         {
             var db = new ScanContext();
             return db.List.ToList<List>();
         }
 
-        public List<To_Buy> GetBuy()
+        public List<To_Buy> GetBuy() //Returns a list of products to buy
         {
             var db = new ScanContext();
             return db.To_Buy.ToList<To_Buy>();
         }
 
-        public Products GetProduct(double code)
+        public Products GetProduct(double code) //Find product in DB and return it.
         {
             using (var db = new ScanContext())
             {
@@ -165,7 +161,7 @@ namespace Scan
             }
         }
 
-        public List GetProductList(string name)
+        public List GetProductList(string name) //Find product in the list of items in the fridge and return it.
         {
             using (var db = new ScanContext())
             {
@@ -176,7 +172,7 @@ namespace Scan
         }
 
 
-        public To_Buy GetProductBuy(string name)
+        public To_Buy GetProductBuy(string name) //Find a Product in the list of items to buy and return it.
         {
             using (var db = new ScanContext())
             {
@@ -186,7 +182,7 @@ namespace Scan
             }
         }
 
-        public Products CreateProduct(double code, string name)
+        public Products CreateProduct(double code, string name) //Create a new Porduct in the DB.
         {
             using (var db = new ScanContext())
             {
@@ -197,7 +193,7 @@ namespace Scan
             }
         }
 
-        public List CreateProduct_List(string name)
+        public List CreateProduct_List(string name) //Create a new item in the list of stuff in the fridge.
         {
             using (var db = new ScanContext())
             {
@@ -208,7 +204,7 @@ namespace Scan
             }
         }
 
-        public To_Buy CreateProduct_Buy(string name)
+        public To_Buy CreateProduct_Buy(string name) //Create new entry in the list of things to buy.
         {
             using (var db = new ScanContext())
             {
@@ -220,7 +216,7 @@ namespace Scan
         }
 
 
-        public bool UpdateProduct(double code, string Name)
+        public bool UpdateProduct(double code, string Name) //Change name of a Product in the DB.
         {
             using (var db = new ScanContext())
             {
@@ -235,7 +231,7 @@ namespace Scan
             }
         }
 
-        public bool DeleteProduct(double code)
+        public bool DeleteProduct(double code) // Remove a Product from the DB.
         {
             using (var db = new ScanContext())
             {
@@ -250,7 +246,7 @@ namespace Scan
             }
         }
 
-        public bool DeleteProduct_List(string name)
+        public bool DeleteProduct_List(string name) //Remove a product from the list of stuff in the fridge
         {
             using (var db = new ScanContext())
             {
@@ -265,7 +261,7 @@ namespace Scan
             }
         }
 
-        public bool DeleteProduct_Buy(string name)
+        public bool DeleteProduct_Buy(string name) //Remove a product from the list of things to buy
         {
             using (var db = new ScanContext())
             {
@@ -281,13 +277,13 @@ namespace Scan
         }
 
 
-        static async Task StartDbxClient() {
+        static async Task StartDbxClient() { //Initialize the DropBox client using a static API key
             var dbx = new DropboxClient("kvV3uLWjyqAAAAAAAAAAB_rUpZkAJqx9zaVe2PztBX60BpxjvRHRuzH2p_i6A3PE");
                 var full = await dbx.Users.GetCurrentAccountAsync();
                 Console.WriteLine("{0} - {1}", full.Name.DisplayName, full.Email);
         }
-
-        public static void WriteWordsToFile(string outputFile, string words)
+        
+        public static void WriteWordsToFile(string outputFile, string words) //Append a string to a file (used to update the local text files, but it does the same thing as the method below and is not used afaik) 
         {
             using (var writer = new StreamWriter(File.OpenWrite(outputFile)))
             {
@@ -297,7 +293,7 @@ namespace Scan
             }
         }
 
-        public static void AppendTextList(string outputFile, string words)
+        public static void AppendTextList(string outputFile, string words) 
         {
 
             using (var writer = new StreamWriter(outputFile, true))
@@ -309,7 +305,7 @@ namespace Scan
             }
 
         }
-        static async Task UploadToDB(DropboxClient dbx, string folder, string file, string content) {
+        static async Task UploadToDB(DropboxClient dbx, string folder, string file, string content) { //Upload a file to DropBox, in the specified path
             using (var mem = new MemoryStream(Encoding.UTF8.GetBytes(content))) {
                 var updated = await dbx.Files.UploadAsync(
                     folder + "/" + file,
@@ -319,7 +315,7 @@ namespace Scan
             }
         }
 
-        public static void AppendTextBuy(string outputFile, string words)
+        public static void AppendTextBuy(string outputFile, string words) //Another method to append text to files, pretty sure this is only here because there used to be a static path
         {
             //var filePath = "C:\Users\Andreea\Dropbox\in_the_fridge.txt";
             using (var writer = new StreamWriter(outputFile, true))
@@ -333,7 +329,7 @@ namespace Scan
         }
 
 
-        public static void RemoveFromFileList(string outputFile, string words)
+        public static void RemoveFromFileList(string outputFile, string words) //Search and remove an item from the local List file (contains products in the fridge). This is pretty clever :D
         {
             string search_text = words;
             string old;
@@ -350,7 +346,7 @@ namespace Scan
             File.WriteAllText(outputFile, n);
         }
 
-        public static void RemoveFromFileBuy(string outputFile, string words)
+        public static void RemoveFromFileBuy(string outputFile, string words) //Same as above but for the list of things to buy.
         {
             string search_text = words;
             string old;
